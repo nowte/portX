@@ -1,0 +1,7 @@
+{
+  "help": "help.py",
+  "scanip": "ipscan.py",
+  "logmsg": "logmsg.py",
+  "netstat": "netstats.py",
+  "utils": "utils.py"
+}

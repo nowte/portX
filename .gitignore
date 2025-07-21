@@ -1,0 +1,19 @@
+# Python cache
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Log dosyaları
+*.log
+scanip_error.txt
+
+# Sistem klasörü (çalışma dosyaları)
+system/
+
+# Ortam değişkenleri
+.env
+
+# IDE ve sistem dosyaları
+.vscode/
+.DS_Store
+Thumbs.db

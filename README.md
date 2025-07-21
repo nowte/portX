@@ -30,6 +30,11 @@
 
 ---
 
+**PortX** is a Batch-based terminal interface that dynamically executes Python `(.py)` scripts to process and manage commands. It also features a PowerShell-integrated logging system that provides structured, colorized output for better readability and debugging.
+This architecture ensures high performance even on low-end systems and offers a modular, easily extensible design.
+
+---
+
 ### 🔍 About This Project
 
 **portX Console** is a lightweight, fast, and platform-independent terminal interface for advanced network diagnostics and IP-based utilities. It provides a modular structure with native Python and Batch integration, making it ideal for both scripting and real-time inspection of connected network devices.

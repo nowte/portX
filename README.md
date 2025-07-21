@@ -12,7 +12,11 @@
 8 8888          ` 8888     ,88'   8 8888   `8b.       8 8888        .8'    `8.`8888.  
 8 8888             `8888888P'     8 8888     `88.     8 8888       .8'      `8.`8888. 
 ```
+
  
+**PortX** is a Batch-based terminal interface that dynamically executes Python `(.py)` scripts to process and manage commands. It also features a PowerShell-integrated logging system that provides structured, colorized output for better readability and debugging.
+This architecture ensures high performance even on low-end systems and offers a modular, easily extensible design.
+
 *Empowering Seamless Network Control and Insight*
 
 ![last commit](https://img.shields.io/badge/last%20commit-today-blue)
@@ -27,11 +31,6 @@
 ![Bat](https://img.shields.io/badge/-Bat-4EAA25?style=flat-square)
 
 </div>
-
----
-
-**PortX** is a Batch-based terminal interface that dynamically executes Python `(.py)` scripts to process and manage commands. It also features a PowerShell-integrated logging system that provides structured, colorized output for better readability and debugging.
-This architecture ensures high performance even on low-end systems and offers a modular, easily extensible design.
 
 ---
 

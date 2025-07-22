@@ -5,9 +5,8 @@ import platform
 import subprocess
 import argparse
 import re
-from utils import log
+from utils import log, set_debug_mode  # utils'de debug kontrol fonksiyonu olduğunu varsayıyorum
 
-# ANSI color codes (Windows 10+ supported)
 COLOR_RESET = "\033[0m"
 COLOR_GREEN = "\033[32m"
 COLOR_YELLOW = "\033[33m"
@@ -26,6 +25,7 @@ def color_status(status):
         return status
 
 def parse_netstat_output(output, system):
+    log("Parsing netstat output...", "debug")
     lines = output.strip().splitlines()
     results = []
 
@@ -36,14 +36,17 @@ def parse_netstat_output(output, system):
             if re.search(r'^Proto\s+Local Address\s+Foreign Address\s+State', line, re.I):
                 header_index = i
                 headers = re.split(r'\s{2,}', line.strip())
+                log(f"Found headers on line {i}: {headers}", "debug")
                 break
         else:
             if re.search(r'^Proto\s+Recv-Q\s+Send-Q\s+Local Address\s+Foreign Address\s+State', line, re.I):
                 header_index = i
                 headers = re.split(r'\s+', line.strip())
+                log(f"Found headers on line {i}: {headers}", "debug")
                 break
 
     if header_index is None:
+        log("Failed to find header line in netstat output.", "fail")
         return None
 
     data_lines = lines[header_index + 1:]
@@ -57,6 +60,8 @@ def parse_netstat_output(output, system):
         if len(parts) >= len(headers):
             row = dict(zip(headers, parts))
             results.append(row)
+
+    log(f"Parsed {len(results)} connection entries.", "debug")
     return results
 
 def print_table(rows, system):
@@ -83,6 +88,8 @@ def print_table(rows, system):
 
 def netstat(show_all=False, protocol=None):
     system = platform.system().lower()
+    log(f"Detected OS: {system}", "debug")
+
     cmd = ['netstat']
 
     if system == "windows":
@@ -99,10 +106,12 @@ def netstat(show_all=False, protocol=None):
             cmd.append('-t')
         elif protocol == "udp":
             cmd.append('-u')
-        # Optional: add '-n', '-p' etc. for more details
+
+    log(f"Executing command: {' '.join(cmd)}", "debug")
 
     try:
         output = subprocess.check_output(cmd, stderr=subprocess.STDOUT, universal_newlines=True)
+        log(f"Command executed successfully, length of output: {len(output)} characters", "debug")
         rows = parse_netstat_output(output, system)
         if rows is None:
             log(output)
@@ -122,8 +131,9 @@ def create_parser():
         add_help=False
     )
     parser.add_argument('-h', '--help', action='help', help='Show usage information')
-    parser.add_argument('-a', '--all', action='store_true', help='Show all connections')
     parser.add_argument('-p', '--protocol', choices=['tcp', 'udp'], help='Filter by protocol')
+    parser.add_argument('-a', '--all', action='store_true', help='Show all connections')
+    parser.add_argument('-d', '--debug', action='store_true', help='Enable debug output')
     return parser
 
 def main():
@@ -133,6 +143,10 @@ def main():
     if unknown:
         log("Unsupported argument format. Use [-h, --help]", "fail")
         return
+
+    set_debug_mode(args.debug)  # utils içindeki debug modu ayarlama fonksiyonu
+
+    log(f"Debug mode is {'enabled' if args.debug else 'disabled'}.", "debug")
 
     netstat(show_all=args.all, protocol=args.protocol)
 
